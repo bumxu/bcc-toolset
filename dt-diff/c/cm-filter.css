@@ -1,0 +1,26 @@
+.cm-filter-neg {
+   color: #AA2222;
+   font-weight: 700;
+}
+.cm-filter-col {
+   color: teal;
+}
+.cm-filter-regex {
+   color: #156CC2;
+}
+.cm-filter-comment {
+   color: #AAA;
+}
+.cm-filter-error {
+   display: inline-block;
+   position: relative;
+}
+.cm-filter-error::before {
+   content: '';
+   display: block;
+   position: absolute;
+   bottom: 0;
+   border-bottom: 1px dashed red;
+   left: 0;
+   right: 0;
+}

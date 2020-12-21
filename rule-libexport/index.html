@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  
+    <title>R /libexport/</title>
+
+    <meta name="author" content="Juande Martos">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+       
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.css">
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.dialog.css">
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.simplescrollbars.css">
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.matchesonscrollbar.css">
+    <link rel="stylesheet" href="../common/c/bcc-base.css">
+    <link rel="stylesheet" href="c/main.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500|Roboto:300,00,500,700&display=swap">
+    
+    <script type="text/javascript" src="../common/j/vendor/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+    <div class=" fluidw intro-row">
+        <h2>Rule /libexport/</h2>
+        <p>
+            Interpreta el XML de una regla de negocio.<br>
+            Usar con cuidado, esta aplicación no tiene la bendición de arquitectura.
+        </p>
+    </div>
+    
+    <div class="fluidw grid-row">
+    
+        <div class="txa-col">
+            <p class="h">Entrada</p>
+
+            <span id="findBtn01" class="input-more-tip btn btn-s">Buscar <span class="keysh">[ Ctrl+F ]</span></span>
+            <span id="beautyxml-btn" class="btn btn-s">Formatear XML <span class="keysh">[ F9 ]</span></span>
+
+            <br>
+           
+            <div class="txa-holder in">
+                <textarea id="xml-in" spellcheck="false"></textarea>
+            </div>
+        </div>
+    
+        <div class="txa-col">
+            <p class="h">Salida</p>
+           
+            <span id="findBtn02" class="input-more-tip btn btn-s">Buscar <span class="keysh">[ Ctrl+F ]</span></span>
+            <a id="xls-link" class="btn btn-s dl-btn">Obtener XLS</a>
+            <a id="csv-link" class="btn btn-s dl-btn">Obtener CSV</a>
+
+            <br>
+
+            <div class="txa-holder out">
+                <textarea id="tab-out" spellcheck="false"></textarea>
+            </div>
+
+            <div id="issues"></div>
+
+            <button id="do-btn" class="btn">Procesar <span class="keysh">[ F8 ]</span></div>
+
+        </div>
+    </div>
+
+    <script src="../common/j/vendor/codemirror.min.js"></script>
+    <script src="../common/j/vendor/codemirror-xml.min.js"></script>
+    <script src="../common/j/vendor/codemirror.simple.js"></script>
+    <script src="../common/j/lib/codemirror.filter-mode.js"></script>
+    <script src="../common/j/vendor/codemirror-searchcursor.min.js"></script>
+    <script src="../common/j/vendor/codemirror.simplescrollbars.js"></script>
+    <script src="../common/j/vendor/codemirror.matchesonscrollbar.js"></script>
+    <script src="../common/j/vendor/codemirror.annotatescrollbar.js"></script>
+    <script src="../common/j/vendor/codemirror.active-line.js"></script>
+    <script src="../common/j/vendor/codemirror-match-highlighter.min.js"></script>
+    <script src="../common/j/vendor/codemirror.dialog.js"></script>
+    <script src="../common/j/vendor/codemirror-search.min.js"></script>
+    <script src="../common/j/vendor/codemirror.jump-to-line.js"></script>
+    <script src="../common/j/vendor/vkbeautify.js"></script>
+    <script src="../common/j/vendor/dateformat.js"></script>
+    <script src="j/xlsx.full.min.js"></script>
+    <script src="../common/j/lib/bx-libexport.js"></script>
+    <script src="j/main.js"></script>
+</body>
+</html>

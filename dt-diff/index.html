@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D-Table DIFF | Comparador de tablas de decisión</title>
+
+    <meta name="author" content="Juande Martos">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.css">
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.simplescrollbars.css">
+    <link rel="stylesheet" href="../common/c/vendor/codemirror.matchesonscrollbar.css">
+
+    <link rel="stylesheet" href="c/cm-rainbow.css">
+    <link rel="stylesheet" href="c/cm-filter.css">
+    <link rel="stylesheet" href="../common/c/bcc-base.css">
+    <link rel="stylesheet" href="c/main.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,500,700">
+</head>
+<body>
+<div class="fluidw intro-row no-select">
+    <h2>D-Table DIFF <span class="version">•ᴗ•</span></h2>
+</div>
+
+<div class="fluidw row">
+    <div class="col col-1-2">
+
+        <div class="blk blk-x-input" id="blkInputA">
+            <div class="cleared">
+                <h3 class="blk-title">A</h3>
+                <div class="blk-alias"><input class="inp-x-alias"></div>
+                <div class="blk-buttons">
+                    <span id="spColumnDialA" class="sp-x-coldial no-select hidden"
+                          title="Columna sobre la que está el cursor">ID_PD_GR</span>
+                    <span id="btnFindInA" class="btn btn-s btn-ico btn-x-find"
+                          title="Mostrar/ocultar cuadro de búsqueda">Buscar...</span>
+                    <span class="btn btn-s btn-ico btn-x-clear" title="Limpiar">Limpiar</span>
+                    <span id="btnTxtDuplA" class="btn btn-s btn-ico btn-x-txtdupl"
+                          title="Quitar líneas duplicadas del texto">Quitar líneas duplicadas del texto/</span>
+                    <span id="btnXmlA" class="btn btn-s btn-ico btn-x-libexport"
+                          title="Convertir la entrada en XML a tabla (TSV)">/libexport/</span>
+                </div>
+            </div>
+            <div class="tx-holder">
+                <textarea id="txRawDataA" name="txRawDataA" class="txRawData"></textarea>
+                <div class="blk-x-inputSearch hidden"><input class="inp inp-x-inputSearch"></div>
+            </div>
+            <div class="blk-setup">
+                <div>
+                    <label class="no-select">Tabla conocida:</label> <span class="sp-x-knownTable"></span></div>
+                <div>
+                    <label for="selKeyColsA" class="no-select">Columnas clave (entrada):</label>
+                    <select id="selKeyColsA" class="sel-x-keyCols" multiple></select></div>
+                <div>
+                    <label for="selIgnoredColsA" class="no-select">Columnas a ignorar en la comparación:</label>
+                    <select id="selIgnoredColsA" class="sel-x-ignoredCols" multiple></select></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col col-1-2">
+
+        <div class="blk blk-x-input" id="blkInputB">
+            <div class="cleared">
+                <h3 class="blk-title">B</h3>
+                <div class="blk-alias"><input class="inp-x-alias"></div>
+                <div class="blk-buttons">
+                    <span id="spColumnDialB" class="sp-x-coldial no-select hidden"
+                          title="Columna sobre la que está el cursor"></span>
+                    <span id="btnFindInB" class="btn btn-s btn-ico btn-x-find"
+                          title="Mostrar/ocultar cuadro de búsqueda">Buscar...</span>
+                    <span class="btn btn-s btn-ico btn-x-clear" title="Limpiar">Limpiar</span>
+                    <span id="btnTxtDuplB" class="btn btn-s btn-ico btn-x-txtdupl"
+                          title="Quitar líneas duplicadas del texto">Quitar líneas duplicadas del texto/</span>
+                    <span id="btnXmlB" class="btn btn-s btn-ico btn-x-libexport"
+                          title="Convertir la entrada en XML a tabla (TSV)">/libexport/</span>
+                </div>
+            </div>
+            <div class="tx-holder">
+                <textarea id="txRawDataB" name="txRawDataB" class="txRawData"></textarea>
+                <div class="blk-x-inputSearch hidden"><input class="inp inp-x-inputSearch"></div>
+            </div>
+            <div class="blk-setup">
+                <div>
+                    <label class="no-select">Tabla conocida:</label> <span class="sp-x-knownTable"></span>
+                    <!--div class="">(Por defecto)</div-->
+                </div>
+                <div>
+                    <label for="selKeyColsB" class="no-select">Columnas clave (entrada):</label>
+                    <!--div class="">(Añadir todas) (Limpiar)</div-->
+                    <select id="selKeyColsB" class="sel-x-keyCols" multiple></select></div>
+                <div>
+                    <label for="selIgnoredColsB" class="no-select">Columnas a ignorar en la comparación:</label>
+                    <!--div class="">(Limpiar)</div-->
+                    <select id="selIgnoredColsB" class="sel-x-ignoredCols" multiple></select></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="fluidw row">
+    <div class="col col-1-3">
+
+        <div class="blk blk-x-filter">
+            <h3 class="no-select">Filtro</h3>
+            <div class="tx-holder">
+                <textarea id="txFilter" spellcheck="false"></textarea>
+            </div>
+        </div>
+
+        <div class="blk blk-x-actions">
+
+            <h3 class="no-select">Acciones</h3>
+
+
+            <label class="help" title="Aunque haya filas completas en [Solo en A] y [Solo en B], mostrarlas descompuestas en lugar de agrupdas con la instrucción IN().">
+                No agrupar con <b>IN</b> las filas completas:
+                <input type="checkbox" id="chkRpUngroupWhole" class="inp">
+            </label><br>
+
+            <!--label>Usar <b>=</b> en filas desagrupadas:
+                <input type="checkbox" id="chk-rpGroupWhole" class="inp" checked>
+            </label><br-->
+
+            <label class="help" title="En [Diferencias] se muestran los valores de A por defecto; si se marca, se mostrarán los de B.">
+                Mostrar <b>B</b> por defecto en la pestaña de diferencias:
+                <input type="checkbox" id="chkRpDiffShowsB" class="inp">
+            </label><br>
+
+            <label class="help" title="En la pestaña diferencias, en lugar de mostrarse las columnas ignoradas del propio extremo, según sea A o B, en gris, se mostrarán las columnas ignoradas del extremo contrario, en azul. Se mostrarán al final, en el orden en el que fueron ignoradas.">
+                Mostrar columnas ignoradas del opuesto en la pestaña de diferencias:
+                <input type="checkbox" id="chkRpAddOppositeIgnored" class="inp">
+            </label><br>
+
+            <!--
+                Usar /<b>=</b>/:
+                <label><input type="radio" name="rad-rpFormat"> Nunca</label>
+                <label><input type="radio" name="rad-rpFormat" checked> Como en origen</label>
+                <label><input type="radio" name="rad-rpFormat"> Siempre</label>
+            </label><br-->
+
+            <button id="btnCompare" class="btn">Comparar <span class="keysh">[ F8 ]</span></button>
+            <br>
+        </div>
+
+    </div>
+    <div class="col col-2-3">
+
+        <div class="blk blk-x-reports">
+            <div class="tab-bar">
+                <div data-show="tab-10" id="tabBtn10" class="tab tab-10 sel"
+                     title="Problemas detectados en las entradas."> Estado
+                </div>
+
+                <div data-show="tab-01" id="tabBtn01" class="tab tab-01"
+                     title="Las filas mostradas están únicamente en la entrada indicada.">
+                    Solo en <span id="tabLabel01">A</span> <sup class="badge" id="tabBadge1"> </sup></div>
+                <div data-show="tab-02" id="tabBtn02" class="tab tab-02"
+                     title="Las filas mostradas están únicamente en la entrada indicada.">
+                    Solo en <span id="tabLabel02">B</span> <sup class="badge" id="tabBadge2"></sup></div>
+                <div data-show="tab-03" id="tabBtn03" class="tab tab-03"
+                     title="Las filas mostradas están en ambas entradas, pero tienen diferencias en sus columnas no clave.">
+                    Diferencias <sup class="badge" id="tabBadge3"></sup></div>
+
+                <div data-show="tab-04" id="tabBtn04" class="tab tab-04"
+                     title="Los elementos mostrados están en varias filas.">
+                    Duplicados en A <sup class="badge" id="tabBadge4"></sup></div>
+                <div data-show="tab-05" id="tabBtn05" class="tab tab-05"
+                     title="Los elementos mostrados están en varias filas.">
+                    Duplicados en B <sup class="badge" id="tabBadge5"></sup></div>
+
+                <div id="tabStatus" class="tab fake-tab hidden">Trabajando...</div>
+            </div>
+
+            <div class="warn-bar hidden" id="warnBar">
+                Alguna de las entradas o el filtro han cambiado. Vuelve a comparar para ver los informes actualizados.
+            </div>
+
+            <div class="tab-panel tab-10">
+                <div id="reportCheckup" class="rp-holder"></div>
+            </div>
+
+            <div class="tab-panel tab-01 hidden">
+                <div id="reportOnlyInA" class="rp-holder"></div>
+            </div>
+
+            <div class="tab-panel tab-02 hidden">
+                <div id="reportOnlyInB" class="rp-holder"></div>
+            </div>
+
+            <div class="tab-panel tab-03 hidden">
+                <div id="reportConflicts" class="rp-holder"></div>
+            </div>
+
+            <div class="tab-panel tab-04 hidden">
+                <div id="reportDuplInA" class="rp-holder"></div>
+            </div>
+
+            <div class="tab-panel tab-05 hidden">
+                <div id="reportDuplInB" class="rp-holder"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- vendor -->
+<script src="../common/j/vendor/codemirror.min.js"></script>
+<script src="../common/j/vendor/codemirror.simple.js"></script>
+<script src="../common/j/vendor/codemirror-searchcursor.min.js"></script>
+<script src="../common/j/vendor/codemirror.simplescrollbars.js"></script>
+<script src="../common/j/vendor/codemirror.matchesonscrollbar.js"></script>
+<script src="../common/j/vendor/codemirror.annotatescrollbar.js"></script>
+<script src="../common/j/vendor/codemirror-match-highlighter.min.js"></script>
+<script src="../common/j/vendor/codemirror.active-line.js"></script>
+<script src="j/cmp/cm-mode-filter.js"></script>
+<script src="j/cmp/cm-mode-rainbow.js"></script>
+<script src="../common/j/lib/bx-libexport.js"></script>
+<script src="j/vendor/md5.min.js"></script>
+<!-- components -->
+<script src="../common/j/lib/EventEmitter.js"></script>
+<script src="j/cmp/ArrayView.js"></script>
+<script src="j/cmp/KnownTables.js"></script>
+<script src="j/cmp/DTRow.js"></script>
+<script src="j/cmp/DecisionTable.js"></script>
+<!-- app -->
+<script src="j/cmp/DTView.js"></script>
+<script src="j/app-ui.js"></script>
+<script src="j/app-rp.js"></script>
+<script src="j/app-ng.js"></script>
+<script src="j/app.js"></script>
+<script src="j/main.js"></script>
+</body>
+</html>

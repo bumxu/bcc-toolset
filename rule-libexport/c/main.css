@@ -1,0 +1,74 @@
+p.h {
+    margin: 2px 0 6px;
+    padding: 0;
+    font-weight: 400;
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.45);
+    display: block;
+}
+
+/* * * * * * * * GENERAL CM * * * * * * * */
+
+.CodeMirror .cm-tab {
+    position: relative;
+}
+.CodeMirror .cm-tab::after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-1px);
+    height: 0;
+    left: 3px;
+    right: 3px;
+    border-top: 1px dotted #ccc;
+}
+
+.grid-row {
+    width: 100%;
+    margin-bottom: 30px;
+}
+.grid-row::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.txa-col {
+    width: 49.3%;
+    display: block;
+    float: left;
+    position: relative;
+    box-sizing: border-box;
+}
+.txa-col:nth-child(odd) {
+    margin-right: 0.7%;
+}
+.txa-col:nth-child(even) {
+    margin-left: 0.7%;
+}
+
+.txa-holder {
+    width: 100%;
+    height: 500px;
+    margin-top: 12px;
+}
+.txa-holder.out {
+    height:393px;
+}
+.txa-holder .cm-tab {
+    width: 3ch;
+}
+.btn.dl-btn:not([href]) {
+    opacity: 0.5;
+}
+
+#issues {
+    font-size: 14px;
+    color: #E00;
+    margin: 10px 0 0;
+    height: 60px;
+    box-sizing: border-box;
+    padding: 2px 4px;
+    border: 1px solid #ddd;
+    overflow: auto;
+}
