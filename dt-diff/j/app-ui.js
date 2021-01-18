@@ -34,6 +34,10 @@ class AppUi {
             xapp.compare();
         });
 
+        xui.$btnCopy.addEventListener('click', () => {
+            xui.copySelectionAsText();
+        });
+
         // Report tabs
         this.$id('tabBtn10').addEventListener('click', this._onShowTabBtn.bind(this));
         this.$id('tabBtn01').addEventListener('click', this._onShowTabBtn.bind(this));
@@ -118,6 +122,19 @@ class AppUi {
         } else {
             this.$id('warnBar').classList.add('hidden');
         }
+    }
+
+    copySelectionAsText() {
+        const text = window.getSelection().toString()
+            .replace(/^.*[AB]:\d.*\n/gm, '');
+
+        navigator.clipboard.writeText(text);
+        // const el = document.createElement('textarea');
+        // el.value = text;
+        // document.body.appendChild(el);
+        // el.select();
+        // document.execCommand('copy');
+        // document.body.removeChild(el);
     }
 
     /**
@@ -243,6 +260,11 @@ class AppUi {
     /** @type {HTMLInputElement} */
     get $btnCompare() {
         return this.$id('btnCompare');
+    }
+
+    /** @type {HTMLInputElement} */
+    get $btnCopy() {
+        return this.$id('btnCopy');
     }
 
     get $reportOnlyInA() {
