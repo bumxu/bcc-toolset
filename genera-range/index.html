@@ -11,230 +11,74 @@
     <link rel="stylesheet" href="../common/c/vendor/codemirror.simplescrollbars.css">
     <link rel="stylesheet" href="../common/c/vendor/codemirror.matchesonscrollbar.css">
     <link rel="stylesheet" href="../common/c/bcc-base.css">
-    <link rel="stylesheet" href="./c/main.css">
+    <link rel="stylesheet" href="c/main.css">
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500|Roboto:300,00,500,700&display=swap">
-
-    <style type="text/css">
-        .fixedw {
-            width: 950px;
-        }
-
-        .col1, .col2 {
-            width: 50%;
-            float: left;
-        }
-
-        h4 {
-            font-weight: 600;
-            margin: 0;
-            font-size: 14px;
-            padding: 0 0 10px;
-        }
-
-        .blk {
-            display: block;
-            position: relative;
-            box-sizing: border-box;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 3px;
-            padding: 7px;
-            margin: 6px 0;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        #ouInput {
-            height: 400px;
-        }
-
-    </style>
+          href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500|Roboto:300,400,500,700&display=swap">
 </head>
 <body>
 
-    <div class="fixedw intro-row">
-        <h2>Genera RANGOS</h2>
-    </div>
+<div class="fixedw intro-row">
+    <h2>Genera RANGOS</h2>
+</div>
 
-    <div class="fixedw">
-        <div class="col1">
-            <section class="blk input">
-                <h4>Resultado de la consulta:</h4>
-                <label>Cantidad de grupos: <br><input type="number" id="ctInput" class="inp" value="6"></label><br><br>
+<div class="fixedw">
+    <div class="col col-3-7">
+        <section class="blk input blk-x-input">
+            <h3 class="no-select">Oficinas</h3>
+
+            <label for="ouInput" class="no-select">Cantidad de acuerdos por oficina:</label><br>
+            <div class="tx-holder">
                 <textarea id="ouInput"></textarea>
+            </div>
+            <p>Formato:<br>
+                <code>%ID&Tab;%ID_EXTERNO&Tab;%NUM_ACCIONES</code></p>
+            <br>
+            <label for="ctInput" class="no-select">Número de rangos a generar:</label><br>
+            <input type="number" id="ctInput" class="inp" value="4">
 
-            </section>
-        </div>
-
-        <div class="col2">
+            <br><br>
 
             <button id="do-btn" class="btn">Procesar</button>
 
-            <section class="blk">
-                <h4>Rangos:</h4>
-                <textarea id="rge-output"></textarea><br><br>
-                <span style="font-weight: 600; color: red; font-size: 25px">¡Ojo! Ninguno de los ou puede tener estado 04.</span>
-            </section>
+            <br><br>
+        </section>
+    </div>
 
-            <section class="blk">
-                <h4>Consulta de identificadores externos:</h4>
+    <div class="col col-4-7">
+
+        <section class="blk blk-x-output">
+            <h3 class="no-select">Salida</h3>
+
+            <label for="txOutCount" class="no-select">Recuento:</label><br>
+            <div class="tx-holder">
+                <textarea id="txOutCount"></textarea>
+            </div>
+
+            <br>
+
+            <label for="txOutFinal" class="no-select">Ejecutor:</label><br>
+            <div class="tx-holder">
+                <textarea id="txOutFinal"></textarea>
+            </div>
+
+            <br>
+
+            <div style="font-weight: 500; color: #cf2222; font-size: 18px; margin: 20px 0 14px; text-align: center">[
+                Recuerde: Ninguno de estos OU debe tener estado 04 ]
+            </div>
+        </section>
+
+        <section class="blk" style="display: none">
+            <h3 class="no-select">Consulta de identificadores externos</h3>
+            <div class="tx-holder">
                 <textarea id="ext-output"></textarea>
-            </section>
-
-        </div>
+            </div>
+        </section>
 
     </div>
 
-    <script>
+</div>
 
-        const $ouInput = document.querySelector('#ouInput');
-        const $ctInput = document.querySelector('#ctInput');
-        const $rgeOut = document.querySelector('#rge-output');
-        const $extOut = document.querySelector('#ext-output');
-        const $doBtn = document.querySelector('#do-btn');
-
-        let rows;
-        let ranges;
-        let rgeCount, rctCount, rgeAvgSize;
-
-        /**
-         *
-         */
-        function readRgeCount() {
-            rgeCount = Number($ctInput.value);
-        }
-
-        /**
-         *
-         */
-        function readLines() {
-            rows = [];
-            rctCount = 0;
-
-            const lines = $ouInput.value.split(/\r?\n/);
-            for (let line of lines) {
-                // Trim
-                line = line.replace(/(^\s+|\s+$)/g, '');
-                if (line != '') {
-                    const tmp = line.split(/\t/);
-                    const row = { ou: String(tmp[0]), oux: Number(tmp[1]), count: Number(tmp[2]) };
-                    rows.push(row);
-
-                    rctCount += row.count;
-                }
-            }
-        }
-
-        /**
-         *
-         */
-        function getRanges() {
-            ranges = [];
-
-            readRgeCount();
-            readLines();
-
-            console.log(`Hay que procesar ${ rctCount } recibos en ${ rgeCount } rangos.`);
-
-            rgeAvgSize = rctCount / rgeCount;
-
-            console.log(`De media, cada rango contendrá ${ rgeAvgSize } recibos.`);
-
-            if (rows.length < rgeCount) {
-                alert('El número de oficinas es menor que el número de rangos.');
-                return;
-            }
-            if (rows.length === rgeCount) {
-                alert('El número de oficinas es igual que el número de rangos.');
-                return;
-            }
-
-            /** @type {{a?:string, b?: string, count?: number} | null} */
-            let range;
-            let count = 0, lSpace, rSpace;
-            for (let i = 0; i < rows.length; i++) {
-                count += rows[i].count;
-
-                // Abrir rango
-                if (range == null) {
-                    range = { a: rows[i].ou };
-                }
-
-                if (count >= rgeAvgSize) {
-                    // Si el número de oficinas supera el tamaño medio del rango,
-                    // decidir entre tomar exceso o defecto
-                    if (i > 0 && count > rgeAvgSize) {
-                        const rSpace = count - rgeAvgSize;
-                        const lSpace = rgeAvgSize - (count - rows[i].count);
-
-                        if (rSpace < lSpace) {
-                            // Cerrar el rango
-                            range.b = rows[i].ou;
-                            range.count = count;
-                        } else {
-                            // Cerrar el rango
-                            range.b = rows[i - 1].ou;
-                            range.count = count - rows[i].count;
-                            i--;
-                        }
-                    } else {
-                        // Cerrar el rango
-                        range.b = rows[i].ou;
-                        range.count = count;
-                    }
-
-                    // Guardar el rango
-                    ranges.push(range);
-                    console.debug(range);
-                    range = null;
-
-                    // Preparar siguiente
-                    count = 0;
-                }
-            }
-
-            // Último rango
-            if (range != null) {
-                range.b = rows[rows.length - 1].ou;
-                range.count = count;
-                ranges.push(range);
-                console.debug(range);
-                range = null;
-            }
-        }
-
-        function displayRanges() {
-            let out = '';
-            for (let range of ranges) {
-                out += `${ range.a } a ${ range.b } (${ range.count })\n`;
-            }
-
-            $rgeOut.value = out;
-        }
-
-        function displayExtQuery() {
-            let ou = [];
-            for (let range of ranges) {
-                ou.push(range.a);
-                ou.push(range.b);
-            }
-
-            $extOut.value =
-                'SELECT id_itrl_ou, \'"\'|| cod_bosr_ent ||\';\'|| cod_itrl_ou  ||\'"\' AS csv \n' +
-                'FROM core.ou_ou \n' +
-                'WHERE id_itrl_ou IN (' + ou.join(',') + ');';
-        }
-
-        $doBtn.addEventListener('click', () => {
-            getRanges();
-            displayRanges();
-            displayExtQuery();
-        });
-
-    </script>
+<script src="j/main.js"></script>
 </body>
 </html>
