@@ -209,6 +209,41 @@ input.inp:focus, textarea:not(.alt):focus, .CodeMirror-focused {
    color: #10719C;
 }
 
+/** TARJETAS */
+
+.blk {
+   display: block;
+   position: relative;
+   box-sizing: border-box;
+   background: rgba(255, 255, 255, 0.6);
+   border-radius: 3px;
+   padding: 7px;
+   margin: 6px 0;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.blk h3 {
+   margin: 4px 2px 7px;
+   padding: 0;
+   font-weight: 400;
+   font-size: 16px;
+   color: #3E434F;
+   font-family: 'Roboto', sans-serif;
+}
+.blk p {
+   margin: 7px 1px;
+   padding: 0;
+   font-weight: 400;
+   font-size: 12px;
+   color: #666;
+   font-family: 'Roboto', sans-serif;
+}
+.blk label {
+   font-size: 12px;
+   margin: 4px 1px 7px;
+   display: inline-block;
+   color: #666;
+}
+
 /* CHOICE */
 .choices {
    margin: 0;
