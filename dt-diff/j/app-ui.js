@@ -211,6 +211,7 @@ class AppUi {
         // Pestaña del informe
         //storage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
 
+        console.log(btoa(String.fromCharCode(...BSON.serialize(storage))));
         const hash = btoa(JSON.stringify(storage));
 
         return location.href.replace(/#.*$/, '') + '#for:' + hash;
