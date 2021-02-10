@@ -49,14 +49,14 @@
         <section class="blk blk-x-output">
             <h3 class="no-select">Salida</h3>
 
-            <label for="txOutCount" class="no-select">Recuento:</label><br>
+            <label for="txOutCount" class="no-select"><b>Recuento:</b></label><br>
             <div class="tx-holder">
                 <textarea id="txOutCount"></textarea>
             </div>
 
             <br>
 
-            <label for="txOutFinal" class="no-select">Ejecutor:</label><br>
+            <label for="txOutFinal" class="no-select"><b>Externo:</b></label><br>
             <div class="tx-holder">
                 <textarea id="txOutFinal"></textarea>
             </div>
@@ -64,7 +64,15 @@
             <br>
 
             <div style="font-weight: 500; color: #cf2222; font-size: 18px; margin: 20px 0 14px; text-align: center">[
-                Recuerde: Ninguno de estos OU debe tener estado 04 ]
+                Recuerde: Ninguno de estos OU debe tener estado 3 o 4 ]
+            </div>
+
+            <br>
+
+            <label for="txOutGaps" class="no-select"><b>Huecos:</b></label><br>
+            <p>Si alguno de estos OU tiene estado 2 hay que ampliar los rangos.</p>
+            <div class="tx-holder">
+                <textarea id="txOutGaps"></textarea>
             </div>
         </section>
 

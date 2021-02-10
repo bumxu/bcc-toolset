@@ -2,6 +2,7 @@ const $ouInput = document.querySelector('#ouInput');
 const $ctInput = document.querySelector('#ctInput');
 const $txOutCount = document.querySelector('#txOutCount');
 const $txOutFinal = document.querySelector('#txOutFinal');
+const $txOutGaps = document.querySelector('#txOutGaps');
 const $extOut = document.querySelector('#ext-output');
 const $doBtn = document.querySelector('#do-btn');
 
@@ -130,6 +131,27 @@ function displayRanges() {
     $txOutFinal.value = outx;
 }
 
+function displayGaps() {
+    let out = '';
+    let gaps = [];
+
+    for (let i = 0; i < ranges.length - 1; i++) {
+        const a = Number(ranges[i].b);
+        const b = Number(ranges[i + 1].a);
+        const gap = [];
+
+        for (let o = a + 1; o < b; o++) {
+            gap.push(o);
+        }
+        if (gap.length > 0) {
+            gaps.push(gap);
+        }
+    }
+
+    out = gaps.map(gap=>gap.join(',')).join('\n');
+    $txOutGaps.value = out;
+}
+
 function displayExtQuery() {
     let ou = [];
     for (let range of ranges) {
@@ -146,5 +168,6 @@ function displayExtQuery() {
 $doBtn.addEventListener('click', () => {
     getRanges();
     displayRanges();
+    displayGaps();
     displayExtQuery();
 });
