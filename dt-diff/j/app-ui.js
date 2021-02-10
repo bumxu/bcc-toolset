@@ -284,6 +284,8 @@ class AppUi {
             //localStorage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
 
             console.log('[Sesion] Estado reemplazado por permalink.');
+
+            xapp.compare();
         }
     }
 
