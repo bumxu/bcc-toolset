@@ -24,9 +24,15 @@ class AppUi {
             styleActiveLine: true
             //highlightSelectionMatches: false
         });
+
+        // Indica si se está restaurando un estado, para evitar llamar a saveSession
+        this.restoringSession = false;
     }
 
     initialize() {
+        // Restaurar desde hash, si lo hay
+        this._restoreFromHash();
+
         // Restaurar la sesión previa
         this._restoreSession();
 
@@ -36,6 +42,10 @@ class AppUi {
 
         xui.$btnCopy.addEventListener('click', () => {
             xui.copySelectionAsText();
+        });
+
+        xui.$btnPermalink.addEventListener('click', () => {
+            xui.copyPermalink();
         });
 
         // Report tabs
@@ -64,6 +74,11 @@ class AppUi {
         this.dtInputB.on('change', this._saveSession.bind(this));
         this.dtInputB.on(DTView.EV_CHANGE_VIEW, this._saveSession.bind(this));
         this.cmFilter.on('change', this._saveSession.bind(this));
+        // ·
+        window.addEventListener('hashchange', (ev) => {
+            this._restoreFromHash();
+            this._restoreSession();
+        }, false);
     }
 
     /**
@@ -137,6 +152,10 @@ class AppUi {
         // document.body.removeChild(el);
     }
 
+    copyPermalink() {
+        navigator.clipboard.writeText(this._getHashPermalink());
+    }
+
     /**
      * @param {'A'|'B'} table
      * @param {number}  ln
@@ -181,26 +200,46 @@ class AppUi {
 
     ///  Sesión  ///
 
+    _getHashPermalink() {
+        const storage = {};
+        // Áreas de entrada y alias
+        storage.dtd_inputA = this.dtInputA.getSession();
+        storage.dtd_inputB = this.dtInputB.getSession();
+        // Filtro
+        storage.inputFilter = this.cmFilter.getValue();
+
+        // Pestaña del informe
+        //storage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
+
+        const hash = btoa(JSON.stringify(storage));
+
+        return location.href.replace(/#.*$/, '') + '#for:' + hash;
+    }
+
     /**
      * Guarda los datos de la sesión actual.
      */
     _saveSession() {
-        // Áreas de entrada y alias
-        localStorage.dtd_inputA = this.dtInputA.getSession();
-        localStorage.dtd_inputB = this.dtInputB.getSession();
-        // Filtro
-        localStorage.inputFilter = this.cmFilter.getValue();
+        if (!this.restoringSession) {
+            // Áreas de entrada y alias
+            localStorage.dtd_inputA = this.dtInputA.getSession();
+            localStorage.dtd_inputB = this.dtInputB.getSession();
+            // Filtro
+            localStorage.inputFilter = this.cmFilter.getValue();
 
-        // Pestaña del informe
-        //localStorage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
+            // Pestaña del informe
+            //localStorage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
 
-        console.log('[Sesion] Estado actualizado.');
+            console.log('[Sesion] Estado guardado.');
+        }
     }
 
     /**
      * Realiza la carga inicial de los datos de la sesión previa.
      */
     _restoreSession() {
+        this.restoringSession = true;
+
         // Áreas de entrada
         this.dtInputA.restoreSession(localStorage.dtd_inputA || '{}');
         this.dtInputB.restoreSession(localStorage.dtd_inputB || '{}');
@@ -208,8 +247,43 @@ class AppUi {
         this.cmFilter.setValue(localStorage.inputFilter || '');
 
         // this._saveSession();
+        this.restoringSession = false;
 
         console.log('[Sesion] Estado restaurado.');
+    }
+
+    /**
+     * Realiza la carga inicial de los datos desde la cedena enviada con la URL.<br>
+     * Descarta la sesión previa.
+     */
+    _restoreFromHash() {
+        if (location.hash.indexOf('#for:') === 0) {
+            const hash = location.hash.substring(5);
+            history.pushState('', document.title, location.pathname + location.search);
+
+            let storage;
+            try {
+                storage = JSON.parse(atob(hash));
+            } catch (err) {
+                console.warn('[Sesion] Error al parsear el permalink.');
+                console.warn(err);
+
+                alert('No se ha podido restaurar la sesión desde el enlace (' + err.message + ').');
+
+                return;
+            }
+
+            // Áreas de entrada y alias
+            localStorage.dtd_inputA = storage.dtd_inputA;
+            localStorage.dtd_inputB = storage.dtd_inputB;
+            // Filtro
+            localStorage.inputFilter = storage.inputFilter;
+
+            // Pestaña del informe
+            //localStorage.activeTab = document.querySelector('.tab-bar > div.sel').dataset.show;
+
+            console.log('[Sesion] Estado reemplazado por permalink.');
+        }
     }
 
     /**
@@ -226,10 +300,10 @@ class AppUi {
         }
 
         // Si el elemento no está en cache, buscarlo en la UI
-        node = document.querySelector(`#${ id }`);
+        node = document.querySelector(`#${id}`);
         // El elemento DEBE existir
         if (node == null) {
-            throw new Error(`Elemento de la interfaz no encontrado: #${ id }.`);
+            throw new Error(`Elemento de la interfaz no encontrado: #${id}.`);
         }
 
         // Guardaar en cache y devolver
@@ -265,6 +339,11 @@ class AppUi {
     /** @type {HTMLInputElement} */
     get $btnCopy() {
         return this.$id('btnCopy');
+    }
+
+    /** @type {HTMLInputElement} */
+    get $btnPermalink() {
+        return this.$id('btnPermalink');
     }
 
     get $reportOnlyInA() {
