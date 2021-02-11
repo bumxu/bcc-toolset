@@ -15,7 +15,7 @@ class AppRP {
         xui.$reportDuplInA.innerHTML = '';
         xui.$reportDuplInB.innerHTML = '';
 
-        let refA = {t: ''}, refB = {t: ''};
+        let refA = { t: '' }, refB = { t: '' };
 
         // Duplicados en A
         for (let dpl of info.duplInA) {
@@ -40,7 +40,7 @@ class AppRP {
      * @param {{t: string}} out - Referencia a la cadena a la que se concatena la salida.
      * @private
      */
-    _renderDuplRow(dt, atoms, out = {t: ''}) {
+    _renderDuplRow(dt, atoms, out = { t: '' }) {
         out.t += `<div class="rp-entry">`;
 
         // Cabecera
@@ -102,7 +102,7 @@ class AppRP {
         xui.$reportOnlyInB.innerHTML = '';
         xui.$reportConflicts.innerHTML = '';
 
-        let refA = {t: ''}, refB = {t: ''}, outX = '';
+        let refA = { t: '' }, refB = { t: '' }, outX = '';
 
         // Solo en A
         for (let lrp of Object.keys(diff.onlyInA).map(Number).sort((a, b) => a > b ? 1 : a < b ? -1 : 0)) {
@@ -147,6 +147,10 @@ class AppRP {
 
         // Conservar
         this._lastDiff = diff;
+
+        setTimeout(()=> {
+            this.tableView()
+        },1500)
     }
 
     clearDiffReports() {
@@ -169,7 +173,7 @@ class AppRP {
      * @param {{t: string}} out - Referencia a la cadena a la que se concatena la salida.
      * @private
      */
-    _renderDiffRow(dt, row, atoms, out = {t: ''}) {
+    _renderDiffRow(dt, row, atoms, out = { t: '' }) {
         const whole = atoms.length === row.atomCount;
 
         out.t += `<div class="rp-entry ${ whole ? 'whole' : 'partial' }">`;
@@ -191,6 +195,9 @@ class AppRP {
                 })
                 .map((v, i) => {
                     return row.table.isIgnoredCol(i) ? `<span style="opacity: 0.4;">${ v }</span>` : v;
+                })
+                .map((v, i) => {
+                    return `<span class="rp-col-n-${ i }">${ v }</span>`;
                 })
                 .join('<span class="sp">\t</span>');
             out.t += `</div>`;
@@ -365,6 +372,21 @@ class AppRP {
         if (this._lastDiff != null) {
             this.renderDiffReport(this._lastDiff);
         }
+    }
+
+    tableView() {
+        document.querySelectorAll('.rp-holder').forEach(($report, i) => {
+
+            const $nCols = $report.querySelectorAll('.rp-col-n-0');
+            const colWidth = [...$nCols.values()].reduce((prv, $nCol, i) => {
+                return Math.max(prv, $nCol.offsetWidth);
+            }, 0);
+            $nCols.forEach(($v, i) => {
+                $v.style.width = colWidth + 'px';
+                $v.style.display = 'inline-block';
+            });
+
+        });
     }
 }
 
