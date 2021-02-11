@@ -69,7 +69,6 @@ input.inp:focus, textarea:not(.alt):focus, .CodeMirror-focused {
 .btn.btn-s {
    font-size: 11px;
    letter-spacing: 0.25px;
-   background: #3E434F;
    padding: 4px 9px;
    display: inline-block;
    margin-top: 0;
@@ -77,17 +76,20 @@ input.inp:focus, textarea:not(.alt):focus, .CodeMirror-focused {
 .btn.btn-xs {
    font-size: 11px;
    letter-spacing: 0.25px;
-   background: #3E434F;
    padding: 1px 4px;
    display: inline-block;
    margin-top: 0;
 }
 .btn.btn-ico {
    text-indent: 200px;
-   width: 8px;
+   width: 30px;
    background-repeat: no-repeat;
    background-position: center center;
-   background-size: 58%;
+   background-size: auto 58%;
+}
+.btn-s.btn-ico {
+   width: 8px;
+   background-size: auto 72%;
 }
 .btn .keysh {
    box-sizing: border-box;

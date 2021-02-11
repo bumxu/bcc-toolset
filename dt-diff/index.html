@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../common/c/vendor/codemirror.css">
     <link rel="stylesheet" href="../common/c/vendor/codemirror.simplescrollbars.css">
     <link rel="stylesheet" href="../common/c/vendor/codemirror.matchesonscrollbar.css">
+    <link rel="stylesheet" href="../common/c/vendor/toastify-js.min.css">
 
     <link rel="stylesheet" href="c/cm-rainbow.css">
     <link rel="stylesheet" href="c/cm-filter.css">
@@ -149,11 +150,9 @@
             </label><br-->
 
             <button id="btnCompare" class="btn">Comparar <span class="keysh">[ F8 ]</span></button>
-            <br>
-            <button id="btnCopy" class="btn btn-s help" title="Copia aquello que este seleccionado en la página como texto sin formato. Permite copiar la salida de los informes y pegarla en Excel sin necesidad de pasar primero por un editor de texto para quitarle el formato.">Copiar selección sin formato (beta)<!--span class="keysh">[ F9 ]</span--></button>
-            <br>
-            <button id="btnPermalink" class="btn btn-s help" title="Copia al portapapeles un enlace a esta página que restaura el contenido actual.">Copiar permalink (beta)</button>
-            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="btnCopy" class="btn btn-ico btn-x-copytext help" title="Copia aquello que este seleccionado en la página como texto sin formato. Permite copiar la salida de los informes y pegarla en Excel sin necesidad de pasar primero por un editor de texto para quitarle el formato.">Copiar selección sin formato (beta)<!--span class="keysh">[ F9 ]</span--></button>
+            <button id="btnPermalink" class="btn btn-s btn-x-permalink help" title="Copia al portapapeles un enlace a esta página que restaura el contenido actual.">Copiar permalink (beta)</button>
         </div>
 
     </div>
@@ -228,6 +227,7 @@
 <script src="../common/j/vendor/codemirror.active-line.js"></script>
 <script src="j/cmp/cm-mode-filter.js"></script>
 <script src="j/cmp/cm-mode-rainbow.js"></script>
+<script src="../common/j/vendor/toastify-js.min.js"></script>
 <script src="../common/j/lib/bx-libexport.js"></script>
 <script src="j/vendor/md5.min.js"></script>
 <script src="j/vendor/bson.bundle.js"></script>

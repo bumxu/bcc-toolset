@@ -88,6 +88,32 @@ class AppUi {
         alert(message);
     }
 
+    showToast(msg, ms) {
+        Toastify({
+            text: msg,
+            duration: ms != null ? ms : 3000,
+            close: true,
+            gravity: 'top',
+            position: 'center',
+            backgroundColor: 'rgba(22,22,22,0.8)',
+            //stopOnFocus: true, // Prevents dismissing of toast on hover
+            //onClick: function(){} // Callback after click
+        }).showToast();
+    }
+
+    errorToast(msg, ms) {
+        Toastify({
+            text: msg,
+            duration: ms != null ? ms : 3000,
+            close: true,
+            gravity: 'top',
+            position: 'center',
+            backgroundColor: 'rgba(188,7,7,0.8)',
+            //stopOnFocus: true, // Prevents dismissing of toast on hover
+            //onClick: function(){} // Callback after click
+        }).showToast();
+    }
+
     _onShowTabBtn(ev) {
         this.showTab(ev.target.dataset.show);
     };
@@ -150,10 +176,18 @@ class AppUi {
         // el.select();
         // document.execCommand('copy');
         // document.body.removeChild(el);
+
+        this.showToast('Selección copiada', 2000);
     }
 
     copyPermalink() {
-        navigator.clipboard.writeText(this._getHashPermalink());
+        try {
+            navigator.clipboard.writeText(this._getHashPermalink());
+            this.showToast('Enlace copiado', 2000);
+        } catch (err) {
+            this.errorToast('No se ha podido generar el enlace');
+            console.warn('Error al generar el enlace permanente', err);
+        }
     }
 
     /**
@@ -197,6 +231,7 @@ class AppUi {
             $btn.innerText = 'B';
         }
     }
+
 
     ///  Sesión  ///
 
@@ -288,6 +323,9 @@ class AppUi {
             xapp.compare();
         }
     }
+
+
+    ///  Componentes  ///
 
     /**
      * @return {HTMLElement}
