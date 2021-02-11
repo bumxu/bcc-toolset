@@ -148,9 +148,9 @@ class AppRP {
         // Conservar
         this._lastDiff = diff;
 
-        setTimeout(() => {
-            this.tableView();
-        }, 1500);
+        // setTimeout(() => {
+        //     this.tableView();
+        // }, 1500);
     }
 
     clearDiffReports() {
