@@ -148,9 +148,9 @@ class AppRP {
         // Conservar
         this._lastDiff = diff;
 
-        setTimeout(()=> {
-            this.tableView()
-        },1500)
+        setTimeout(() => {
+            this.tableView();
+        }, 1500);
     }
 
     clearDiffReports() {
@@ -375,16 +375,30 @@ class AppRP {
     }
 
     tableView() {
+        //$('<style></style>').appendTo($(document.body)).remove();
+
+        // Para cada informe
         document.querySelectorAll('.rp-holder').forEach(($report, i) => {
 
-            const $nCols = $report.querySelectorAll('.rp-col-n-0');
-            const colWidth = [...$nCols.values()].reduce((prv, $nCol, i) => {
-                return Math.max(prv, $nCol.offsetWidth);
-            }, 0);
-            $nCols.forEach(($v, i) => {
-                $v.style.width = colWidth + 'px';
-                $v.style.display = 'inline-block';
-            });
+            // Para cada columna
+            for (let n = 0; n < 1000; n++) {
+                // Siguiente índice de columna
+                const $nCols = $report.querySelectorAll('.rp-col-n-'+n);
+                // Si no hay valores para esta columna, hemos terminado
+                if ($nCols.length === 0) {
+                    break;
+                }
+
+                // Cálculo del ancho máximo de la columna actual
+                const colWidth = [...$nCols.values()].reduce((prv, $nCol, i) => {
+                    return Math.max(prv, $nCol.offsetWidth);
+                }, 0);
+                // Aplicar el ancho calculado
+                $nCols.forEach(($v, i) => {
+                    $v.style.width = colWidth + 'px';
+                    $v.style.display = 'inline-block';
+                });
+            }
 
         });
     }
